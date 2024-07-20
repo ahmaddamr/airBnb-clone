@@ -15,7 +15,7 @@ class UserModel extends ContactModel {
     String? id,
     String? firstName,
     String? lastName,
-    MemoryImage? displayImage,
+    String? displayImage,
     this.email = '',
     this.city = '',
     this.country = '',

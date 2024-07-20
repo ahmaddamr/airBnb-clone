@@ -181,7 +181,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       backgroundColor: Styles.primaryColor,
                       borderSideColor: Colors.transparent,
                       style: Styles.login,
-                      onPressed: () {
+                      onPressed: () async{
                         if (formKey.currentState!.validate()) {
                           Fluttertoast.showToast(
                               msg: 'Valid',
@@ -191,15 +191,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               textColor: Colors.white,
                               fontSize: 18.0);
                           print('valid');
-                          FireBaseUserFunctions().signUp(
+                            try {
+                            await FireBaseUserFunctions().signUp(
                               _emailController.text,
                               _passController.text,
                               _BioController.text,
                               _firstNameController.text,
                               _lastNameController.text,
                               _CityController.text,
-                              imageFile);
-                          print('acc created ');
+                              imageFile!,
+                            );
+                            print('acc created ');
+                          } catch (e) {
+                            Fluttertoast.showToast(
+                              msg: 'Account creation failed: $e',
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.CENTER,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 18.0,
+                            );
+                          }
 
                         } else {
                           Fluttertoast.showToast(
