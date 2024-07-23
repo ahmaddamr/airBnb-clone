@@ -1,6 +1,5 @@
 import 'package:airbnb_clone/data/models/contact_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class UserModel extends ContactModel {
   String? email;

@@ -204,9 +204,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               imageFile!,
                             );
                             print('acc created ');
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()));
                           } catch (e) {
                             Fluttertoast.showToast(
                               msg: 'Account creation failed: $e',

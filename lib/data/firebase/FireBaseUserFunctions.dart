@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:airbnb_clone/data/models/user_model.dart';
+import 'package:airbnb_clone/presentation/home/screen/home_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
 class FireBaseUserFunctions {
   UserModel userModel = UserModel();
@@ -51,6 +54,7 @@ class FireBaseUserFunctions {
         textColor: Colors.white,
         fontSize: 18.0,
       );
+      Get.to(const HomeScreen());
     } catch (e) {
       Fluttertoast.showToast(
         msg: 'Failed to create account: $e',
@@ -103,6 +107,15 @@ class FireBaseUserFunctions {
         userModel.id = currentUserId;
         getImageFromStorage(currentUserId);
         getUserInfo(currentUserId);
+        Fluttertoast.showToast(
+          msg: 'Login Success',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 18.0,
+        );
+        Get.to(const HomeScreen());
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
