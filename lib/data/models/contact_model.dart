@@ -6,7 +6,7 @@ class ContactModel {
   String? firstName;
   String? lastName;
   String? fullName;
-  String? displayImage;
+  dynamic displayImage;
   ContactModel(
       {this.id = '',
       this.firstName = '',

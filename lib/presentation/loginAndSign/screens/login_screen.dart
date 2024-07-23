@@ -1,4 +1,6 @@
 // ignore_for_file: avoid_print
+import 'package:airbnb_clone/data/firebase/FireBaseUserFunctions.dart';
+import 'package:airbnb_clone/presentation/home/screen/home_screen.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/screens/register_screen.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/widgets/custom_elevated_button.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/widgets/custom_text_field.dart';
@@ -11,6 +13,7 @@ class LoginScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  // static const nav = 'LoginScreen';
 
   @override
   Widget build(BuildContext context) {
@@ -78,14 +81,18 @@ class LoginScreen extends StatelessWidget {
                       style: Styles.login,
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
+                          FireBaseUserFunctions().login(_emailController.text, _passController.text);
                           Fluttertoast.showToast(
-                              msg: 'Valid',
+                              msg: 'Valid and LOgin Success',
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.CENTER,
                               backgroundColor: Colors.green,
                               textColor: Colors.white,
                               fontSize: 18.0);
-                          print('valid');
+                          print('Login Success');
+                          // Navigator.of(context).pushReplacement(
+                          //       MaterialPageRoute(
+                          //           builder: (context) => const HomeScreen()));
                         } else {
                           Fluttertoast.showToast(
                               msg: 'Not Valid',
@@ -96,6 +103,7 @@ class LoginScreen extends StatelessWidget {
                               fontSize: 18.0);
                           print('Not valid');
                         }
+                        
                       },
                     ),
                     Row(

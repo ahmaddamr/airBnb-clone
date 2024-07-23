@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:airbnb_clone/data/firebase/FireBaseUserFunctions.dart';
+import 'package:airbnb_clone/presentation/home/screen/home_screen.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/screens/login_screen.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/widgets/custom_elevated_button.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/widgets/custom_text_field.dart';
@@ -150,9 +151,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: MaterialButton(
-                        onPressed: () 
-                        async{
-                          var img =await ImagePicker().pickImage(source: ImageSource.gallery);
+                        onPressed: () async {
+                          var img = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
                           if (img != null) {
                             imageFile = File(img.path);
                             setState(() {
@@ -181,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       backgroundColor: Styles.primaryColor,
                       borderSideColor: Colors.transparent,
                       style: Styles.login,
-                      onPressed: () async{
+                      onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           Fluttertoast.showToast(
                               msg: 'Valid',
@@ -191,7 +192,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               textColor: Colors.white,
                               fontSize: 18.0);
                           print('valid');
-                            try {
+                          try {
+                            print('valid2');
                             await FireBaseUserFunctions().signUp(
                               _emailController.text,
                               _passController.text,
@@ -202,6 +204,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               imageFile!,
                             );
                             print('acc created ');
+                            Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                    builder: (context) => const HomeScreen()));
                           } catch (e) {
                             Fluttertoast.showToast(
                               msg: 'Account creation failed: $e',
@@ -212,7 +217,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               fontSize: 18.0,
                             );
                           }
-
                         } else {
                           Fluttertoast.showToast(
                               msg: 'Not Valid',

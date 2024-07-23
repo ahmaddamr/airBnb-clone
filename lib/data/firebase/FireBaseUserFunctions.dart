@@ -7,11 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class FireBaseUserFunctions {
-  Future<void> signUp(String email, String password, String bio, String firstName, String lastName, String city, File userImg) async {
+  UserModel userModel = UserModel();
+  Future<void> signUp(String email, String password, String bio,
+      String firstName, String lastName, String city, File userImg) async {
     UserModel userModel = UserModel();
 
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final credential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -21,13 +24,11 @@ class FireBaseUserFunctions {
         throw Exception('User ID is empty');
       }
 
-      // Save the user data to Firestore first
-      await saveUserDataToFireStore(bio, city, email, firstName, lastName, userId);
+      await saveUserDataToFireStore(
+          bio, city, email, firstName, lastName, userId);
 
-      // Upload the image and get the download URL
       String imageUrl = await saveImgToFirebase(userImg, userId);
 
-      // Update user model with image URL
       userModel.id = userId;
       userModel.bio = bio;
       userModel.city = city;
@@ -37,8 +38,10 @@ class FireBaseUserFunctions {
       userModel.firstName = firstName;
       userModel.lastName = lastName;
 
-      // Update Firestore with the image URL
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({'displayImage': imageUrl});
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .update({'displayImage': imageUrl});
 
       Fluttertoast.showToast(
         msg: "Account created successfully!",
@@ -60,7 +63,9 @@ class FireBaseUserFunctions {
     }
   }
 
-  Future<void> saveUserDataToFireStore(String bio, String city, String email, String firstName, String lastName, String id) async {
+  //!create collection and upload userdata to firestore
+  Future<void> saveUserDataToFireStore(String bio, String city, String email,
+      String firstName, String lastName, String id) async {
     Map<String, dynamic> dataMap = {
       'bio': bio,
       'city': city,
@@ -75,6 +80,7 @@ class FireBaseUserFunctions {
     await FirebaseFirestore.instance.collection('users').doc(id).set(dataMap);
   }
 
+  //!upload img to firebase storage
   Future<String> saveImgToFirebase(File userImg, String userId) async {
     Reference reference = FirebaseStorage.instance
         .ref()
@@ -83,9 +89,68 @@ class FireBaseUserFunctions {
         .child(userId + '.png');
     UploadTask uploadTask = reference.putFile(userImg);
 
-    // Wait for the upload to complete and get the download URL
     TaskSnapshot taskSnapshot = await uploadTask;
     String downloadUrl = await taskSnapshot.ref.getDownloadURL();
     return downloadUrl;
+  }
+
+  void login(email, password) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        String currentUserId = value.user!.uid;
+        userModel.id = currentUserId;
+        getImageFromStorage(currentUserId);
+        getUserInfo(currentUserId);
+      });
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        Fluttertoast.showToast(
+          msg: '$e',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 18.0,
+        );
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        Fluttertoast.showToast(
+          msg: '$e',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 18.0,
+        );
+      }
+    }
+  }
+
+  getUserInfo(id) async {
+    DocumentSnapshot data =
+        await FirebaseFirestore.instance.collection('users').doc(id).get();
+    userModel.snapshot = data;
+    userModel.firstName = data['firstName'];
+    userModel.lastName = data['lastName'];
+    userModel.bio = data['bio'];
+    userModel.city = data['city'];
+    userModel.isHost = data['isHost'];
+  }
+
+  getImageFromStorage(id) async {
+    if (userModel.displayImage != null) {
+      return userModel.displayImage;
+    }
+    final imgData = await FirebaseStorage.instance
+        .ref()
+        .child('userImages')
+        .child(id)
+        .child(id + '.png')
+        .getData(1024 * 1024);
+    userModel.displayImage = MemoryImage(imgData!);
+    return userModel.displayImage;
   }
 }
