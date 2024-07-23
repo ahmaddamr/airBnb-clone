@@ -25,8 +25,14 @@ class ProfileScreen extends StatelessWidget {
             ),
             Column(
               children: [
-                Text(userModel.getFullName(),style: Styles.login,),
-                Text(userModel.email.toString(),style: Styles.login,),
+                Text(
+                  userModel.getFullName(),
+                  style: Styles.login,
+                ),
+                Text(
+                  userModel.email.toString(),
+                  style: Styles.login,
+                ),
               ],
             )
           ],

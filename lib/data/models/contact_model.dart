@@ -1,5 +1,4 @@
 import 'package:airbnb_clone/data/models/user_model.dart';
-import 'package:flutter/material.dart';
 
 class ContactModel {
   String? id;
@@ -13,7 +12,7 @@ class ContactModel {
       this.lastName = '',
       this.displayImage});
   String getFullName() {
-    return fullName = firstName! + ' ' + lastName!;
+    return fullName = firstName??'' + ' ' + lastName!;
   }
 
   UserModel createUserFromContact() {

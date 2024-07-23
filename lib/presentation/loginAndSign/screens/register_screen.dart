@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:airbnb_clone/data/firebase/FireBaseUserFunctions.dart';
-import 'package:airbnb_clone/presentation/home/screen/home_screen.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/screens/login_screen.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/widgets/custom_elevated_button.dart';
 import 'package:airbnb_clone/presentation/loginAndSign/widgets/custom_text_field.dart';
