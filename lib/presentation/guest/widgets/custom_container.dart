@@ -2,7 +2,8 @@ import 'package:airbnb_clone/utils/styles_class.dart';
 import 'package:flutter/material.dart';
 
 class CustomContainer extends StatelessWidget {
-  const CustomContainer({super.key});
+    CustomContainer({super.key,this.child});
+  Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class CustomContainer extends StatelessWidget {
             stops: [0, 1],
             tileMode: TileMode.clamp),
       ),
+      child: child,
     );
   }
 }

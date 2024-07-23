@@ -167,4 +167,17 @@ class FireBaseUserFunctions {
     userModel.displayImage = MemoryImage(imgData!);
     return userModel.displayImage;
   }
+  becomeHost(id)
+  async{
+    userModel.isHost = true;
+    Map<String,dynamic> dataMap =
+    {
+      'isHost':true,
+    };
+    await FirebaseFirestore.instance.collection('users').doc(id).update(dataMap);
+  }
+  modifyCurrentlyHosting(bool isHosting)
+  {
+    userModel.isCurentlyHost = isHosting;
+  }
 }

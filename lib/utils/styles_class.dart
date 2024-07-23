@@ -9,6 +9,13 @@ class Styles {
     'Inbox',
     'Profile',
   ];
+  static List<String> hostTitles = [
+    'Bookings',
+    'My Postings',
+    'Trips',
+    'Inbox',
+    'Profile',
+  ];
   static const TextStyle onboardingTitle = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
