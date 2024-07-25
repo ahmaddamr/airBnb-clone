@@ -22,11 +22,13 @@ class FireBaseUserFunctions {
         email: email,
         password: password,
       );
+      print('credential${credential.user!.uid}');
 
       String userId = credential.user?.uid ?? '';
       if (userId.isEmpty) {
         throw Exception('User ID is empty');
       }
+      print('1111111111111111');
 
       await saveUserDataToFireStore(
           bio, city, email, firstName, lastName, userId);
@@ -47,6 +49,7 @@ class FireBaseUserFunctions {
           .doc(userId)
           .update({'displayImage': imageUrl});
 
+      print('222222222222222');
       Fluttertoast.showToast(
         msg: "Account created successfully!",
         toastLength: Toast.LENGTH_SHORT,
@@ -55,8 +58,11 @@ class FireBaseUserFunctions {
         textColor: Colors.white,
         fontSize: 18.0,
       );
+      print('3333333333333333333333');
+
       Get.to(const HomeScreen());
     } catch (e) {
+      print('errrrrrrrrror$e');
       Fluttertoast.showToast(
         msg: 'Failed to create account: $e',
         toastLength: Toast.LENGTH_LONG,
@@ -167,17 +173,19 @@ class FireBaseUserFunctions {
     userModel.displayImage = MemoryImage(imgData!);
     return userModel.displayImage;
   }
-  becomeHost(id)
-  async{
+
+  becomeHost(id) async {
     userModel.isHost = true;
-    Map<String,dynamic> dataMap =
-    {
-      'isHost':true,
+    Map<String, dynamic> dataMap = {
+      'isHost': true,
     };
-    await FirebaseFirestore.instance.collection('users').doc(id).update(dataMap);
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(id)
+        .update(dataMap);
   }
-  modifyCurrentlyHosting(bool isHosting)
-  {
+
+  modifyCurrentlyHosting(bool isHosting) {
     userModel.isCurentlyHost = isHosting;
   }
 }

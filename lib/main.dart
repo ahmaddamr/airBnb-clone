@@ -1,4 +1,4 @@
-import 'package:airbnb_clone/firebase_options%20copy.dart';
+import 'package:airbnb_clone/firebase_options.dart';
 import 'package:airbnb_clone/presentation/splash_screen.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
