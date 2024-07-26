@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'package:airbnb_clone/data/models/user_model.dart';
 import 'package:airbnb_clone/presentation/guest/screens/guest_home_screen.dart';
 import 'package:airbnb_clone/presentation/home/screen/home_screen.dart';
+import 'package:airbnb_clone/presentation/profile/screen/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -60,7 +63,7 @@ class FireBaseUserFunctions {
       );
       print('3333333333333333333333');
 
-      Get.to(const HomeScreen());
+      Get.to( ProfileScreen());
     } catch (e) {
       print('errrrrrrrrror$e');
       Fluttertoast.showToast(
@@ -109,11 +112,11 @@ class FireBaseUserFunctions {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) {
+          .then((value) async{
         String currentUserId = value.user!.uid;
         userModel.id = currentUserId;
-        getImageFromStorage(currentUserId);
-        getUserInfo(currentUserId);
+        await getImageFromStorage(currentUserId);
+        await getUserInfo(currentUserId);
         Fluttertoast.showToast(
           msg: 'Login Success',
           toastLength: Toast.LENGTH_LONG,
@@ -155,6 +158,7 @@ class FireBaseUserFunctions {
     userModel.snapshot = data;
     userModel.firstName = data['firstName'];
     userModel.lastName = data['lastName'];
+    userModel.email = data['email']?? '';
     userModel.bio = data['bio'];
     userModel.city = data['city'];
     userModel.isHost = data['isHost'];
@@ -174,7 +178,7 @@ class FireBaseUserFunctions {
     return userModel.displayImage;
   }
 
-  becomeHost(id) async {
+  becomeHost(String id) async {
     userModel.isHost = true;
     Map<String, dynamic> dataMap = {
       'isHost': true,

@@ -1,7 +1,9 @@
+import 'package:airbnb_clone/data/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Styles {
+  static UserModel model = UserModel();
   static List<String> screenTitles = [
     'Explore',
     'Saved',

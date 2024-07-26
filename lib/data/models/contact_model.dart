@@ -12,7 +12,7 @@ class ContactModel {
       this.lastName = '',
       this.displayImage});
   String getFullName() {
-    return fullName = firstName??'' + ' ' + lastName!;
+    return fullName = firstName??'' + ' ' + lastName!??"";
   }
 
   UserModel createUserFromContact() {

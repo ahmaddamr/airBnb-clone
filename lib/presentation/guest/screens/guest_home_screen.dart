@@ -20,25 +20,36 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
     const SavedListingsScreen(),
     const TripsScreen(),
     const InboxScreen(),
-      ProfileScreen()
+    ProfileScreen()
   ];
   int index = 0;
+  final PageController controller = PageController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace:  CustomContainer(),
+        flexibleSpace: CustomContainer(),
         title: Text(Styles.screenTitles[index]),
         automaticallyImplyLeading: false,
       ),
-      body: screens[index],
+      body: PageView(
+          onPageChanged: (value) {
+            setState(() {
+              index = value;
+            });
+          },
+          controller: controller,
+          children: screens),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black,
         selectedItemColor: Styles.primaryColor,
         onTap: (i) {
           setState(() {
             index = i;
+            controller.animateToPage(i,
+                duration: const Duration(milliseconds: 30),
+                curve: Curves.easeOutCirc);
           });
         },
         currentIndex: index,

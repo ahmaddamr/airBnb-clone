@@ -31,10 +31,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } else {
       hostTitle = 'become a Host';
     }
+    // fetchData();
   }
+  // Future<void> fetchData()
+  // async{
+  //   final id = FirebaseAuth.instance.currentUser!.uid;
+  //   if (id != null) {
+  //     userModel =await FireBaseUserFunctions().getUserInfo(id);
+  //     if (userModel.isHost != null) {
+  //       if (userModel.isHost!) {
+  //         hostTitle = userModel.isHost! ? 'show my host dash' : 'show my guest dash';
+  //       }else
+  //     {
+  //       hostTitle = 'become a host';
+  //     }
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+  UserModel userModel = UserModel();
     return Scaffold(
       body: SingleChildScrollView(
         child: Expanded(
@@ -44,29 +61,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                MaterialButton(
-                  onPressed: () {
-                    modifyHost();
-                  },
+                CircleAvatar(
+                  backgroundColor: Styles.primaryColor,
+                  radius: MediaQuery.of(context).size.width / 5.0,
                   child: CircleAvatar(
-                    backgroundColor: Styles.primaryColor,
-                    radius: MediaQuery.of(context).size.width / 5.0,
-                    child: CircleAvatar(
-                      // backgroundImage:,
-                      // userModel.displayImage,
-                      radius: MediaQuery.of(context).size.width / 5.2,
-                    ),
+                    backgroundImage:
+                    userModel.displayImage,
+                    radius: MediaQuery.of(context).size.width / 5.2,
                   ),
                 ),
                 Text(
-                  'name',
-                  // userModel.getFullName(),
-                  style: Styles.login,
+                  Styles.model.firstName??"null",
+                  style: const TextStyle(color: Colors.black,fontSize: 25),
                 ),
                 Text(
-                  'name',
-                  // userModel.email.toString(),
-                  style: Styles.login,
+                  userModel.email.toString()??"null",
+                  style: const TextStyle(color: Colors.black,fontSize: 25),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -92,6 +102,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: MaterialButton(
                       onPressed: () {
                         modifyHost();
+                        setState(() {
+                          
+                        });
                       },
                       child: ListTile(
                         leading: Text(
