@@ -1,8 +1,8 @@
 import 'package:airbnb_clone/presentation/guest/screens/inbox_screen.dart';
 import 'package:airbnb_clone/presentation/guest/screens/trips_screen.dart';
 import 'package:airbnb_clone/presentation/guest/widgets/custom_container.dart';
-import 'package:airbnb_clone/presentation/host/screen/booking_screen.dart';
-import 'package:airbnb_clone/presentation/host/screen/my_postings_screen.dart';
+import 'package:airbnb_clone/presentation/host/screens/booking_screen.dart';
+import 'package:airbnb_clone/presentation/host/screens/my_postings_screen.dart';
 import 'package:airbnb_clone/presentation/profile/screen/profile_screen.dart';
 import 'package:airbnb_clone/utils/styles_class.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +18,6 @@ class _HostScreenState extends State<HostScreen> {
   List<Widget> screens = [
     const BookingScreen(),
     const MyPostingsScreen(),
-    const TripsScreen(),
     const InboxScreen(),
       ProfileScreen()
   ];
@@ -50,12 +49,12 @@ class _HostScreenState extends State<HostScreen> {
           BottomNavigationBarItem(
               icon: const Icon(Icons.home),
               label: Styles.hostTitles[1]),
+          // BottomNavigationBarItem(
+          //     icon: const Icon(Icons.hotel), label: Styles.hostTitles[2]),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.hotel), label: Styles.hostTitles[2]),
+              icon: const Icon(Icons.message), label: Styles.hostTitles[2]),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.message), label: Styles.hostTitles[3]),
-          BottomNavigationBarItem(
-              icon: const Icon(Icons.person), label: Styles.hostTitles[4]),
+              icon: const Icon(Icons.person), label: Styles.hostTitles[3]),
         ],
       ),
     );

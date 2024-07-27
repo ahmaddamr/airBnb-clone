@@ -2,7 +2,7 @@ import 'package:airbnb_clone/core/constants/contants.dart';
 import 'package:airbnb_clone/data/firebase/FireBaseUserFunctions.dart';
 import 'package:airbnb_clone/presentation/guest/screens/guest_home_screen.dart';
 import 'package:airbnb_clone/presentation/guest/widgets/custom_container.dart';
-import 'package:airbnb_clone/presentation/host/screen/host_screen.dart';
+import 'package:airbnb_clone/presentation/host/screens/host_screen.dart';
 import 'package:airbnb_clone/presentation/auth/screens/login_screen.dart';
 import 'package:airbnb_clone/utils/styles_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
