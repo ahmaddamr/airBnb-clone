@@ -27,6 +27,4 @@ class UserModel extends ContactModel {
     isHost = false;
     isCurentlyHost = false;
   }
-  
-  
 }

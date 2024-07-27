@@ -34,12 +34,12 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
         automaticallyImplyLeading: false,
       ),
       body: PageView(
+          controller: controller,
           onPageChanged: (value) {
             setState(() {
               index = value;
             });
           },
-          controller: controller,
           children: screens),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.black,
@@ -48,8 +48,7 @@ class _GuestHomeScreenState extends State<GuestHomeScreen> {
           setState(() {
             index = i;
             controller.animateToPage(i,
-                duration: const Duration(milliseconds: 30),
-                curve: Curves.easeOutCirc);
+                duration: const Duration(seconds: 1), curve: Curves.easeInOut);
           });
         },
         currentIndex: index,

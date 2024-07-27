@@ -19,7 +19,7 @@ class AirBnbClone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return const GetMaterialApp(//never use getx use go)router instead
       debugShowCheckedModeBanner: false,
       home: SpalshScreen(),
     );

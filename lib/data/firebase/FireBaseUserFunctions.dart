@@ -1,9 +1,9 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
+import 'package:airbnb_clone/core/constants/contants.dart';
 import 'package:airbnb_clone/data/models/user_model.dart';
 import 'package:airbnb_clone/presentation/guest/screens/guest_home_screen.dart';
-import 'package:airbnb_clone/presentation/home/screen/home_screen.dart';
 import 'package:airbnb_clone/presentation/profile/screen/profile_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,7 +17,6 @@ class FireBaseUserFunctions {
   UserModel userModel = UserModel();
   Future<void> signUp(String email, String password, String bio,
       String firstName, String lastName, String city, File userImg) async {
-    UserModel userModel = UserModel();
 
     try {
       final credential =
@@ -36,16 +35,16 @@ class FireBaseUserFunctions {
       await saveUserDataToFireStore(
           bio, city, email, firstName, lastName, userId);
 
-      String imageUrl = await saveImgToFirebase(userImg, userId);
-
-      userModel.id = userId;
-      userModel.bio = bio;
-      userModel.city = city;
-      userModel.email = email;
-      userModel.displayImage = imageUrl;
-      userModel.password = password;
-      userModel.firstName = firstName;
-      userModel.lastName = lastName;
+      dynamic imageUrl = await saveImgToFirebase(userImg, userId);
+   print(imageUrl);
+      userInfo.id = userId;
+      userInfo.bio = bio;
+      userInfo.city = city;
+      userInfo.email = email;
+      userInfo.displayImage = imageUrl;
+      userInfo.password = password;
+      userInfo.firstName = firstName;
+      userInfo.lastName = lastName;
 
       await FirebaseFirestore.instance
           .collection('users')
@@ -114,9 +113,10 @@ class FireBaseUserFunctions {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) async{
         String currentUserId = value.user!.uid;
-        userModel.id = currentUserId;
+        userInfo.id = currentUserId;
         await getImageFromStorage(currentUserId);
         await getUserInfo(currentUserId);
+        print('id is ${userInfo.id}');
         Fluttertoast.showToast(
           msg: 'Login Success',
           toastLength: Toast.LENGTH_LONG,
@@ -152,21 +152,22 @@ class FireBaseUserFunctions {
     }
   }
 
-  getUserInfo(id) async {
+  getUserInfo(id) async {//th
     DocumentSnapshot data =
         await FirebaseFirestore.instance.collection('users').doc(id).get();
-    userModel.snapshot = data;
-    userModel.firstName = data['firstName'];
-    userModel.lastName = data['lastName'];
-    userModel.email = data['email']?? '';
-    userModel.bio = data['bio'];
-    userModel.city = data['city'];
-    userModel.isHost = data['isHost'];
+    userInfo.snapshot = data;
+    userInfo.firstName = data['firstName']??"";
+    userInfo.lastName = data['lastName']??"";
+    userInfo.email = data['email']?? '';
+    userInfo.bio = data['bio']??"";
+    userInfo.city = data['city']??"";
+    userInfo.isHost = data['isHost']??"";
+    print("data is ${userInfo.city}");
   }
 
   getImageFromStorage(id) async {
-    if (userModel.displayImage != null) {
-      return userModel.displayImage;
+    if (userInfo.displayImage != null) {
+      return userInfo.displayImage;
     }
     final imgData = await FirebaseStorage.instance
         .ref()
@@ -174,12 +175,12 @@ class FireBaseUserFunctions {
         .child(id)
         .child(id + '.png')
         .getData(1024 * 1024);
-    userModel.displayImage = MemoryImage(imgData!);
-    return userModel.displayImage;
+    userInfo.displayImage = MemoryImage(imgData!);
+    return userInfo.displayImage;
   }
 
   becomeHost(String id) async {
-    userModel.isHost = true;
+    userInfo.isHost = true;
     Map<String, dynamic> dataMap = {
       'isHost': true,
     };
@@ -190,6 +191,6 @@ class FireBaseUserFunctions {
   }
 
   modifyCurrentlyHosting(bool isHosting) {
-    userModel.isCurentlyHost = isHosting;
+    userInfo.isCurentlyHost = isHosting;
   }
 }
