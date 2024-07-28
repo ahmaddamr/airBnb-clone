@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:airbnb_clone/presentation/auth/screens/login_screen.dart';
 import 'package:airbnb_clone/presentation/guest/screens/guest_home_screen.dart';
+import 'package:airbnb_clone/presentation/profile/screen/profile_screen.dart';
 import 'package:airbnb_clone/utils/styles_class.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,15 +21,13 @@ class _SpalshPageState extends State<SpalshScreen> {
   }
 
   _goNext() {
-    if(FirebaseAuth.instance.currentUser!=null){
-       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) =>   GuestHomeScreen()));
-    }
-    else{
+    if (FirebaseAuth.instance.currentUser != null) {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) =>   LoginScreen()));
+          MaterialPageRoute(builder: (context) => const GuestHomeScreen()));
+    } else {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()));
     }
-    
   }
 
   @override

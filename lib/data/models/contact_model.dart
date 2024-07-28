@@ -12,7 +12,8 @@ class ContactModel {
       this.lastName = '',
       this.displayImage});
   String getFullName() {
-    return fullName = firstName??'' + ' ' + lastName!??"";
+    // ignore: prefer_adjacent_string_concatenation
+    return fullName = firstName??'' + ' ' + lastName!;
   }
 
   UserModel createUserFromContact() {

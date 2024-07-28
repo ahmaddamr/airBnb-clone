@@ -12,7 +12,7 @@ class MyPostingsScreen extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: InkWell(
           onTap: () {
-            Get.to(const CreateListingScreen());
+            Get.to( CreateListingScreen());
           },
           child: Container(
             margin: const EdgeInsets.all(10),
@@ -23,7 +23,13 @@ class MyPostingsScreen extends StatelessWidget {
             ),
             child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [Icon(Icons.add), Text('Create a Listing',style: TextStyle(fontSize: 20),)],
+              children: [
+                Icon(Icons.add),
+                Text(
+                  'Create a Listing',
+                  style: TextStyle(fontSize: 20),
+                )
+              ],
             ),
           ),
         ),

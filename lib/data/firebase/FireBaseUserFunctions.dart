@@ -11,13 +11,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class FireBaseUserFunctions {
   UserModel userModel = UserModel();
   Future<void> signUp(String email, String password, String bio,
       String firstName, String lastName, String city, File userImg) async {
-
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -36,7 +34,7 @@ class FireBaseUserFunctions {
           bio, city, email, firstName, lastName, userId);
 
       dynamic imageUrl = await saveImgToFirebase(userImg, userId);
-   print(imageUrl);
+      print(imageUrl);
       userInfo.id = userId;
       userInfo.bio = bio;
       userInfo.city = city;
@@ -62,7 +60,7 @@ class FireBaseUserFunctions {
       );
       print('3333333333333333333333');
 
-      Get.to( ProfileScreen());
+      Get.to(ProfileScreen());
     } catch (e) {
       print('errrrrrrrrror$e');
       Fluttertoast.showToast(
@@ -109,9 +107,10 @@ class FireBaseUserFunctions {
 
   void login(email, password) async {
     try {
+      // ignore: unused_local_variable
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) async{
+          .then((value) async {
         String currentUserId = value.user!.uid;
         userInfo.id = currentUserId;
         await getImageFromStorage(currentUserId);
@@ -152,16 +151,17 @@ class FireBaseUserFunctions {
     }
   }
 
-  getUserInfo(id) async {//th
+  getUserInfo(id) async {
+    //th
     DocumentSnapshot data =
         await FirebaseFirestore.instance.collection('users').doc(id).get();
     userInfo.snapshot = data;
-    userInfo.firstName = data['firstName']??"";
-    userInfo.lastName = data['lastName']??"";
-    userInfo.email = data['email']?? '';
-    userInfo.bio = data['bio']??"";
-    userInfo.city = data['city']??"";
-    userInfo.isHost = data['isHost']??"";
+    userInfo.firstName = data['firstName'] ?? "";
+    userInfo.lastName = data['lastName'] ?? "";
+    userInfo.email = data['email'] ?? '';
+    userInfo.bio = data['bio'] ?? "";
+    userInfo.city = data['city'] ?? "";
+    userInfo.isHost = data['isHost'] ?? "";
     print("data is ${userInfo.city}");
   }
 

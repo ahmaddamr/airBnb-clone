@@ -1,5 +1,4 @@
 import 'package:airbnb_clone/presentation/guest/screens/inbox_screen.dart';
-import 'package:airbnb_clone/presentation/guest/screens/trips_screen.dart';
 import 'package:airbnb_clone/presentation/guest/widgets/custom_container.dart';
 import 'package:airbnb_clone/presentation/host/screens/booking_screen.dart';
 import 'package:airbnb_clone/presentation/host/screens/my_postings_screen.dart';

@@ -18,6 +18,15 @@ class Styles {
     'Inbox',
     'Profile',
   ];
+  static List<String> residenceTypes = [
+    'Detached House',
+    'Villa',
+    'Apartment',
+    'Condo',
+    'Flat',
+    'Town House',
+    'Studio'
+  ];
   static const TextStyle onboardingTitle = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
