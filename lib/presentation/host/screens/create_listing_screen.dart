@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:airbnb_clone/core/constants/contants.dart';
 import 'package:airbnb_clone/data/firebase/FireBaseUserFunctions.dart';
+import 'package:airbnb_clone/data/models/posting_model.dart';
 import 'package:airbnb_clone/presentation/auth/widgets/custom_elevated_button.dart';
 import 'package:airbnb_clone/presentation/auth/widgets/custom_text_field.dart';
 import 'package:airbnb_clone/presentation/guest/widgets/custom_container.dart';
@@ -14,7 +15,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateListingScreen extends StatefulWidget {
-  const CreateListingScreen({super.key});
+    CreateListingScreen({super.key,this.posting});
+  PostingModel? posting;
 
   @override
   State<CreateListingScreen> createState() => _CreateListingScreenState();

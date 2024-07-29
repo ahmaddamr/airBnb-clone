@@ -116,6 +116,7 @@ class FireBaseUserFunctions {
         userInfo.id = currentUserId;
         await getImageFromStorage(currentUserId);
         await getUserInfo(currentUserId);
+        await userInfo.getPostsFromFirestore();
         print('id is ${userInfo.id}');
         Fluttertoast.showToast(
           msg: 'Login Success',
@@ -228,9 +229,6 @@ class FireBaseUserFunctions {
           .whenComplete(() {});
     }
   }
-  // static getPostsFromFirestore()
-  // async{
-  //   List<String> myPostingIds = List<String>.from(snapshot!['myPostingIds']) ?? [];
-  // }
+  
 
 }

@@ -47,4 +47,15 @@ class UserModel extends ContactModel {
         .doc(id)
         .update({'myPostingIds': myPostingsList});
   }
+
+    getPostsFromFirestore() async {
+    List<String> myPostingIds =
+        List<String>.from(snapshot!['myPostingIds']) ?? [];
+    for (var postingId in myPostingIds) {
+      PostingModel posting = PostingModel(id: postingId);
+      await posting.getPostingsInfoFromFirestore();
+      await posting.getAllImagesFromStorage();
+      myPostings!.add(posting);
+    }
+  }
 }

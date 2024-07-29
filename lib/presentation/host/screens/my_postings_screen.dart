@@ -1,4 +1,7 @@
+import 'package:airbnb_clone/core/constants/contants.dart';
 import 'package:airbnb_clone/presentation/host/screens/create_listing_screen.dart';
+import 'package:airbnb_clone/presentation/host/widget/create_post_widget.dart';
+import 'package:airbnb_clone/presentation/host/widget/post_listTile.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,32 +11,19 @@ class MyPostingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Align(
+      body: ListView.builder(
+        itemCount: userInfo.myPostings!.length +1,
+        itemBuilder:(context, index) {
+        return Align(
         alignment: Alignment.topCenter,
         child: InkWell(
           onTap: () {
-            Get.to( CreateListingScreen());
+            Get.to( CreateListingScreen(posting: (index== userInfo.myPostings!.length)?null : userInfo.myPostings![index]));
           },
-          child: Container(
-            margin: const EdgeInsets.all(10),
-            width: 350,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            decoration: BoxDecoration(
-              border: Border.all(),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.add),
-                Text(
-                  'Create a Listing',
-                  style: TextStyle(fontSize: 20),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+          child:(index == userInfo.myPostings!.length)?  CreatePostWidget() : PostListtile(posting: userInfo.myPostings![index],)
+        )
+      );
+      },)
     );
   }
 }
