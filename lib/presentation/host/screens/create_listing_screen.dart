@@ -1,10 +1,16 @@
 import 'dart:io';
 
+import 'package:airbnb_clone/core/constants/contants.dart';
+import 'package:airbnb_clone/data/firebase/FireBaseUserFunctions.dart';
+import 'package:airbnb_clone/presentation/auth/widgets/custom_elevated_button.dart';
 import 'package:airbnb_clone/presentation/auth/widgets/custom_text_field.dart';
 import 'package:airbnb_clone/presentation/guest/widgets/custom_container.dart';
+import 'package:airbnb_clone/presentation/host/screens/host_screen.dart';
 import 'package:airbnb_clone/presentation/host/widget/amenities.dart';
 import 'package:airbnb_clone/utils/styles_class.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateListingScreen extends StatefulWidget {
@@ -16,6 +22,7 @@ class CreateListingScreen extends StatefulWidget {
 
 class _CreateListingScreenState extends State<CreateListingScreen> {
   final formKey = GlobalKey<FormState>();
+  bool isLoading= false ;
 
   TextEditingController nameController = TextEditingController();
 
@@ -300,9 +307,85 @@ class _CreateListingScreenState extends State<CreateListingScreen> {
                               );
                             },
                           ),
+                        ),
+                        isLoading ? const Center(child: CircularProgressIndicator()) : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                          child:  CustomElvatedButton(
+                            text: 'Upload',
+                            backgroundColor: Styles.primaryColor,
+                            borderSideColor: Colors.transparent,
+                            style: Styles.login,
+                            onPressed: () async {
+                              if (!formKey.currentState!.validate()) {
+                                
+                                return Fluttertoast.showToast(
+                                  msg: "Not Valid",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 18.0,
+                                );
+                              }
+                              if (residenceSelected == '') {
+                                return Fluttertoast.showToast(
+                                  msg: "Empty Field",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 18.0,
+                                );
+                              }
+                              if (images!.isEmpty) {
+                                return Fluttertoast.showToast(
+                                  msg: "Photos are Required",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 18.0,
+                                );
+                              }
+                              setState(() {
+                                isLoading = true;
+                                  
+                                });
+                              posting.name = nameController.text;
+                              posting.price =
+                                  double.parse(priceController.text);
+                              posting.discreption = discreptionController.text;
+                              posting.address = addressController.text;
+                              posting.amenities =
+                                  amentiesController.text.split(',');
+                              posting.beds = beds;
+                              posting.bathrooms = bathrooms;
+                              posting.displayImages = images;
+                              posting.type = residenceSelected;
+                              posting.host =
+                                  AppConstants.createContactFromUserModel();
+                              posting.setImageNames();
+                              //if this new or old post
+                              posting.rating = 0;
+                              posting.bookings = [];
+                              posting.reviews = [];
+                              await FireBaseUserFunctions
+                                  .addPostInfoToFirestore();
+                                  setState(() {
+                              isLoading = false;
+                                
+                              });
+                              await FireBaseUserFunctions.addImagesToFirebase();
+                              // setState(() {
+                              // isLoading = false;
+                                
+                              // });
+                              Get.to(const HostScreen());
+                            },
+                          ),
                         )
                       ],
-                    )
+                    ),
                   ],
                 ),
               )

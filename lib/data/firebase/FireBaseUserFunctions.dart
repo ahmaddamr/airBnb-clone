@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:airbnb_clone/core/constants/contants.dart';
+import 'package:airbnb_clone/data/models/posting_model.dart';
 import 'package:airbnb_clone/data/models/user_model.dart';
 import 'package:airbnb_clone/presentation/guest/screens/guest_home_screen.dart';
 import 'package:airbnb_clone/presentation/profile/screen/profile_screen.dart';
@@ -193,4 +194,43 @@ class FireBaseUserFunctions {
   modifyCurrentlyHosting(bool isHosting) {
     userInfo.isCurentlyHost = isHosting;
   }
+
+  static addPostInfoToFirestore() async {
+    Map<String, dynamic> dataMap = {
+      'address': posting.address,
+      'amenities': posting.amenities,
+      'bathrooms': posting.bathrooms,
+      'discreption': posting.discreption,
+      'beds': posting.beds,
+      // 'city': posting.city,
+      // 'country':posting.country,
+      'hostId': userInfo.id,
+      'images': posting.images,
+      'name': posting.name,
+      'price': posting.price,
+      'rating': 3.5,
+      'type': posting.type,
+    };
+    DocumentReference reference =
+        await FirebaseFirestore.instance.collection('postings').add(dataMap);
+    await userInfo.addPosting(posting);
+  }
+
+  static addImagesToFirebase() async {
+    for (var i = 0; i < posting.displayImages!.length; i++) {
+      Reference reference = FirebaseStorage.instance
+          .ref()
+          .child('postingImages')
+          .child(posting.id!)
+          .child(posting.images![i]);
+      await reference
+          .putData(posting.displayImages![i].bytes)
+          .whenComplete(() {});
+    }
+  }
+  // static getPostsFromFirestore()
+  // async{
+  //   List<String> myPostingIds = List<String>.from(snapshot!['myPostingIds']) ?? [];
+  // }
+
 }
