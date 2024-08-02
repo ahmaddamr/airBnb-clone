@@ -1,7 +1,9 @@
+import 'package:airbnb_clone/core/constants/contants.dart';
 import 'package:airbnb_clone/data/models/booking_model.dart';
 import 'package:airbnb_clone/data/models/contact_model.dart';
 import 'package:airbnb_clone/data/models/review_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +27,7 @@ class PostingModel {
   List<ReviewModel>? reviews;
 
   PostingModel(
-      {this.id = '',
+      {this.id = ' ',
       this.name = '',
       this.type = '',
       this.price = 0,
@@ -51,7 +53,9 @@ class PostingModel {
 
   getPostingsInfoFromFirestore() async {
     DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('postings').doc(id).get();
+        await FirebaseFirestore.instance.collection('postings').doc(FirebaseAuth.instance.currentUser!.uid).get();
+        // print(snapshot.id);
+        print(FirebaseAuth.instance.currentUser!.uid);
   }
 
   getPsotInfoFromSnapshot(DocumentSnapshot snapshot) {
@@ -74,7 +78,7 @@ class PostingModel {
 
   getAllImagesFromStorage() async {
     displayImages = [];
-    for (var i = 0; i < images!.length; i++) {
+    for (int i = 0; i < images!.length; i++) {
       final imgData = await FirebaseStorage.instance
           .ref()
           .child('postingImages')
@@ -84,5 +88,13 @@ class PostingModel {
           displayImages!.add(MemoryImage(imgData!));
     }
     return displayImages;
+  }
+  getAmenties()
+  {
+    if (amenities!.isEmpty) {
+      return '';
+    }
+    String amenitiesString = amenities.toString();
+    return amenitiesString.substring(1,amenitiesString.length -1);
   }
 }

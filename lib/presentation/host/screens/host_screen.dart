@@ -7,7 +7,8 @@ import 'package:airbnb_clone/utils/styles_class.dart';
 import 'package:flutter/material.dart';
 
 class HostScreen extends StatefulWidget {
-  const HostScreen({super.key});
+  HostScreen({super.key,this.myindex});
+  int? myindex;
 
   @override
   State<HostScreen> createState() => _HostScreenState();
@@ -18,15 +19,21 @@ class _HostScreenState extends State<HostScreen> {
     const BookingScreen(),
     const MyPostingsScreen(),
     const InboxScreen(),
-      ProfileScreen()
+    ProfileScreen()
   ];
   int index = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  index = widget.myindex ?? 3;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace:  CustomContainer(),
+        flexibleSpace: CustomContainer(),
         title: Text(Styles.hostTitles[index]),
         automaticallyImplyLeading: false,
       ),
@@ -46,8 +53,7 @@ class _HostScreenState extends State<HostScreen> {
             label: Styles.hostTitles[0],
           ),
           BottomNavigationBarItem(
-              icon: const Icon(Icons.home),
-              label: Styles.hostTitles[1]),
+              icon: const Icon(Icons.home), label: Styles.hostTitles[1]),
           // BottomNavigationBarItem(
           //     icon: const Icon(Icons.hotel), label: Styles.hostTitles[2]),
           BottomNavigationBarItem(

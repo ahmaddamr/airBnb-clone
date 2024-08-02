@@ -1,21 +1,24 @@
+import 'package:airbnb_clone/core/constants/contants.dart';
 import 'package:airbnb_clone/data/models/posting_model.dart';
 import 'package:flutter/material.dart';
 
 class PostListtile extends StatefulWidget {
-  PostListtile({super.key, this.posting});
-  PostingModel? posting;
+  PostListtile({super.key, this.post});
+  PostingModel? post;
+  // var post;
 
   @override
   State<PostListtile> createState() => _PostListtileState();
 }
 
 class _PostListtileState extends State<PostListtile> {
-  PostingModel? posting;
+  PostingModel? post;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    posting = widget.posting;
+    post = widget.post;
   }
 
   @override
@@ -29,20 +32,22 @@ class _PostListtileState extends State<PostListtile> {
         ),
         child: ListTile(
           leading: Text(
-            posting!.name!,
+            post!.name ?? '',
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           trailing: AspectRatio(
-              aspectRatio: 3 / 2,
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Image(
-                  image: posting!.displayImages!.first,
-                  fit: BoxFit.fitWidth,
-                ),
-              )),
+            aspectRatio: 3 / 2,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Image(
+                image: post!.displayImages!.first, 
+                fit: BoxFit.fitWidth,
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 }
+//what was the problem?

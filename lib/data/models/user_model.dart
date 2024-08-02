@@ -1,3 +1,4 @@
+import 'package:airbnb_clone/core/constants/contants.dart';
 import 'package:airbnb_clone/data/models/booking_model.dart';
 import 'package:airbnb_clone/data/models/contact_model.dart';
 import 'package:airbnb_clone/data/models/posting_model.dart';
@@ -52,7 +53,7 @@ class UserModel extends ContactModel {
     List<String> myPostingIds =
         List<String>.from(snapshot!['myPostingIds']) ?? [];
     for (var postingId in myPostingIds) {
-      PostingModel posting = PostingModel(id: postingId);
+       posting = PostingModel(id: postingId);
       await posting.getPostingsInfoFromFirestore();
       await posting.getAllImagesFromStorage();
       myPostings!.add(posting);

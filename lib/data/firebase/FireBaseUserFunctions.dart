@@ -214,6 +214,7 @@ class FireBaseUserFunctions {
     };
     DocumentReference reference =
         await FirebaseFirestore.instance.collection('postings').add(dataMap);
+        // posting.id = reference.id;
     await userInfo.addPosting(posting);
   }
 
@@ -229,6 +230,23 @@ class FireBaseUserFunctions {
           .whenComplete(() {});
     }
   }
-  
+  static updatePostInfoToFirestore() async {
+    Map<String, dynamic> dataMap = {
+      'address': posting.address,
+      'amenities': posting.amenities,
+      'bathrooms': posting.bathrooms,
+      'discreption': posting.discreption,
+      'beds': posting.beds,
+      // 'city': posting.city,
+      // 'country':posting.country,
+      'hostId': userInfo.id,
+      'images': posting.images,
+      'name': posting.name,
+      'price': posting.price,
+      'rating': 3.5,
+      'type': posting.type,
+    };
+        await FirebaseFirestore.instance.collection('postings').doc(posting.id).update(dataMap);
+  }
 
 }

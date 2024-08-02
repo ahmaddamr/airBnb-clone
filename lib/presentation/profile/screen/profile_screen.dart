@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:airbnb_clone/core/constants/contants.dart';
 import 'package:airbnb_clone/data/firebase/FireBaseUserFunctions.dart';
 import 'package:airbnb_clone/presentation/guest/screens/guest_home_screen.dart';
@@ -129,13 +131,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Get.to(const GuestHomeScreen());
       } else {
         userInfo.isCurentlyHost = true;
-        Get.to(const HostScreen());
+        Get.to( HostScreen());
       }
     } else {
       FireBaseUserFunctions functions = FireBaseUserFunctions();
       await functions.becomeHost(FirebaseAuth.instance.currentUser!.uid);
       userInfo.isCurentlyHost = true;
-      Get.to(const HostScreen());
+      Get.to( HostScreen());
     }
   }
 }

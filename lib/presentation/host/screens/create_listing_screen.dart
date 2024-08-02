@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateListingScreen extends StatefulWidget {
-    CreateListingScreen({super.key,this.posting});
+  CreateListingScreen({super.key, this.posting});
   PostingModel? posting;
 
   @override
@@ -24,7 +24,7 @@ class CreateListingScreen extends StatefulWidget {
 
 class _CreateListingScreenState extends State<CreateListingScreen> {
   final formKey = GlobalKey<FormState>();
-  bool isLoading= false ;
+  bool isLoading = false;
 
   TextEditingController nameController = TextEditingController();
 
@@ -53,24 +53,45 @@ class _CreateListingScreenState extends State<CreateListingScreen> {
   }
 
   initialValues() {
-    nameController = TextEditingController(text: '');
+    if (widget.posting == null) {
+      nameController = TextEditingController(text: '');
 
-    priceController = TextEditingController(text: '');
-    discreptionController = TextEditingController(text: '');
+      priceController = TextEditingController(text: '');
+      discreptionController = TextEditingController(text: '');
 
-    addressController = TextEditingController(text: '');
-    amentiesController = TextEditingController(text: '');
-    residenceSelected = Styles.residenceTypes.first;
-    beds = {
-      'small': 0,
-      'medium': 0,
-      'large': 0,
-    };
-    bathrooms = {
-      'Full': 0,
-      'half': 0,
-    };
-    images = [];
+      addressController = TextEditingController(text: '');
+      amentiesController = TextEditingController(text: '');
+      residenceSelected = Styles.residenceTypes.first;
+      beds = {
+        'small': 0,
+        'medium': 0,
+        'large': 0,
+      };
+      bathrooms = {
+        'Full': 0,
+        'half': 0,
+      };
+      images = [];
+      setState(() {
+        
+      });
+    } else {
+      nameController = TextEditingController(text: widget.posting!.name);
+
+      priceController =
+          TextEditingController(text: widget.posting!.price.toString());
+      discreptionController =
+          TextEditingController(text: widget.posting!.discreption);
+
+      addressController = TextEditingController(text: widget.posting!.address);
+      amentiesController =
+          TextEditingController(text: widget.posting!.getAmenties());
+      residenceSelected = widget.posting!.type!;
+      beds = widget.posting!.beds;
+      bathrooms = widget.posting!.bathrooms;
+      images = widget.posting!.displayImages;
+      setState(() {});
+    }
   }
 
   @override
@@ -310,82 +331,112 @@ class _CreateListingScreenState extends State<CreateListingScreen> {
                             },
                           ),
                         ),
-                        isLoading ? const Center(child: CircularProgressIndicator()) : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                          child:  CustomElvatedButton(
-                            text: 'Upload',
-                            backgroundColor: Styles.primaryColor,
-                            borderSideColor: Colors.transparent,
-                            style: Styles.login,
-                            onPressed: () async {
-                              if (!formKey.currentState!.validate()) {
-                                
-                                return Fluttertoast.showToast(
-                                  msg: "Not Valid",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 18.0,
-                                );
-                              }
-                              if (residenceSelected == '') {
-                                return Fluttertoast.showToast(
-                                  msg: "Empty Field",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 18.0,
-                                );
-                              }
-                              if (images!.isEmpty) {
-                                return Fluttertoast.showToast(
-                                  msg: "Photos are Required",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 18.0,
-                                );
-                              }
-                              setState(() {
-                                isLoading = true;
-                                  
-                                });
-                              posting.name = nameController.text;
-                              posting.price =
-                                  double.parse(priceController.text);
-                              posting.discreption = discreptionController.text;
-                              posting.address = addressController.text;
-                              posting.amenities =
-                                  amentiesController.text.split(',');
-                              posting.beds = beds;
-                              posting.bathrooms = bathrooms;
-                              posting.displayImages = images;
-                              posting.type = residenceSelected;
-                              posting.host =
-                                  AppConstants.createContactFromUserModel();
-                              posting.setImageNames();
-                              //if this new or old post
-                              posting.rating = 0;
-                              posting.bookings = [];
-                              posting.reviews = [];
-                              await FireBaseUserFunctions
-                                  .addPostInfoToFirestore();
-                                  setState(() {
-                              isLoading = false;
-                                
-                              });
-                              await FireBaseUserFunctions.addImagesToFirebase();
-                              // setState(() {
-                              // isLoading = false;
-                                
-                              // });
-                              Get.to(const HostScreen());
-                            },
-                          ),
-                        )
+                        isLoading
+                            ? const Center(child: CircularProgressIndicator())
+                            : Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 40.0),
+                                child: CustomElvatedButton(
+                                  text: 'Upload',
+                                  backgroundColor: Styles.primaryColor,
+                                  borderSideColor: Colors.transparent,
+                                  style: Styles.login,
+                                  onPressed: () async {
+                                    if (!formKey.currentState!.validate()) {
+                                      return Fluttertoast.showToast(
+                                        msg: "Not Valid",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 18.0,
+                                      );
+                                    }
+                                    if (residenceSelected == '') {
+                                      return Fluttertoast.showToast(
+                                        msg: "Empty Field",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 18.0,
+                                      );
+                                    }
+                                    if (images!.isEmpty) {
+                                      return Fluttertoast.showToast(
+                                        msg: "Photos are Required",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 18.0,
+                                      );
+                                    }
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    posting.name = nameController.text;
+                                    posting.price =
+                                        double.parse(priceController.text);
+                                    posting.discreption =
+                                        discreptionController.text;
+                                    posting.address = addressController.text;
+                                    posting.amenities =
+                                        amentiesController.text.split(',');
+                                    posting.beds = beds;
+                                    posting.bathrooms = bathrooms;
+                                    posting.displayImages = images;
+                                    posting.type = residenceSelected;
+                                    posting.host = AppConstants
+                                        .createContactFromUserModel();
+                                    posting.setImageNames();
+                                    //if this new or old post
+                                    if (widget.posting == null) {
+                                      posting.rating = 0;
+                                      posting.bookings = [];
+                                      posting.reviews = [];
+                                      await FireBaseUserFunctions
+                                          .addPostInfoToFirestore();
+                                      await FireBaseUserFunctions
+                                          .addImagesToFirebase();
+                                          Fluttertoast.showToast(
+                                        msg: "post uploaded successfuly",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 18.0,
+                                      );
+                                    } else {
+                                      posting.rating = widget.posting?.rating??0;
+                                      posting.bookings =
+                                          widget.posting!.bookings;
+                                      posting.reviews = widget.posting!.reviews;
+                                      for (var i = 0; i < userInfo.myPostings!.length; i++) {
+                                        if (userInfo.myPostings![i].id == posting.id) 
+                                        {
+                                          userInfo.myPostings![i] = posting;
+                                          break;
+                                        }
+                                      }
+                                      await FireBaseUserFunctions.updatePostInfoToFirestore();
+                                      Fluttertoast.showToast(
+                                        msg: "post updated successfuly",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.CENTER,
+                                        backgroundColor: Colors.green,
+                                        textColor: Colors.white,
+                                        fontSize: 18.0,
+                                      );
+                                    }
+
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Get.to( HostScreen(myindex:1,));
+                                  },
+                                ),
+                              )
                       ],
                     ),
                   ],
